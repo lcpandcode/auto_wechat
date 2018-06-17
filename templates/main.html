@@ -8,10 +8,24 @@
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <img src='../static/QR.png'>
-    <button class="btn">我已扫描并在微信确认登录</button>
-    <div style="display: none"></div>
+    <img src='../static/QR.png' id="qrimg">
+    <button class="btn" id="confirm">我已扫描并在微信确认登录</button>
+    <div>如二维码失效，可点击二维码刷新</div>
+    <div style="display: none">{{ uuid_num }}</div>
     <script>
+        $(document).ready(function (){
+            //强制刷新图片
+            var timestamp = new Date().getTime();
+            $("#qrimg").attr('src',$("#qrimg").attr('src') + '?' +timestamp);
+
+            $("#qrimg").click(function () {
+                $("#qrimg").attr('src',$(this).attr('src') + '?' +timestamp);
+            });
+            
+            $("#confirm").click(function () {
+                window.location.replace("/init.html");
+            })
+        });
 
     </script>
 </body>
