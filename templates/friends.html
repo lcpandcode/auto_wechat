@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>回话列表</title>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
+
     <div style="margin-left: 5%;margin-top: 1%;margin-bottom: 1%">好友列表-选择您要自动回复的好友</div>
+    <div style="margin-left: 5%;margin-top: 1%;margin-bottom: 1%">有时由于网络问题，加载的数据不完整，您需要点击左边这个按钮重新加载:<button  class="btn" id="reload">重新加载</button></div>
+
     <div style="margin-left: 5%;margin-right: 5%">
     <table class="table table-bordered">
       <thead>
@@ -17,19 +10,15 @@
           <th>选择您要自动回复的好友</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>小名</td>
+      <tbody id="friends_table">
+      {% for name in friends %}
+          <tr>
+          <td>{{ name }}</td>
           <td>
-              <button  class="btn select_btn" >未选择</button><div style="display: none">小明</div>
+              <button  class="btn select_btn" >未选择</button><div style="display: none">{{ name }}</div>
           </td>
         </tr>
-        <tr>
-          <td>小东</td>
-          <td>
-              <button  class="btn select_btn" >未选择</button><div style="display: none">小明</div>
-          </td>
-        </tr>
+      {% endfor %}
       </tbody>
     </table>
         <button class="btn" id="submit_friends">提交</button>
@@ -45,40 +34,66 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>小名</td>
+        {% for name in rooms %}
+          <tr>
+          <td>{{ name }}</td>
           <td>
-              <button  class="btn select_btn" >未选择</button><div style="display: none">小明</div>
+              <button  class="btn select_btn" >未选择</button><div style="display: none">{{ name }}</div>
           </td>
         </tr>
-        <tr>
-          <td>小东</td>
-          <td>
-              <button  class="btn select_btn" >未选择</button><div style="display: none">小明</div>
-          </td>
-        </tr>
+      {% endfor %}
       </tbody>
     </table>
+    <button class="btn" id="submit_rooms">提交</button>
     </div>
-</body>
 
     <script type="text/javascript">
         //选择自动回复的好友
-        var friends = "?friends=";
+        var friends = new Array();
         $(document).ready(function(){
           $(".select_btn").click(function(){
-            $(this).html("已选择");
-            friends = friends + '|' + $(this).next().html();
-
+              var select_val = $(this).html();
+              if(select_val=="未选择"){
+                  $(this).html("已选择");
+                  var val = $(this).next().html();
+                  alert(val);
+                  friends.push(val);
+              }else {
+                $(this).html("未选择");
+                var val = $(this).next().html();
+                for(var i=0;i<friends.length;i++){
+                    if(friends[i]==val){
+                        friends.splice(i,i);
+                    }
+                }
+              }
+              alert(JSON.stringify(friends));
           });
 
           $("#submit_friends").click(function(){
             //提交数据到后台
-              var url = '/auto_replay_friends_list' + friends
+              friends_json = JSON.stringify(friends)
+              var url = '/auto_reply_setting?friends=' + friends_json;
               $.get(url,function(data,status){
                 alert("Data: " + data + "\nStatus: " + status);
               });
           });
         });
+
+        $("#reload").click(function () {
+                url = '/friends';
+                $.get(url,function (data) {
+                    //alert(data);
+                    json_obj = JSON.parse(data)
+                    json_data = json_obj.data
+                    status = json_obj.status
+                    if(status=='0'){
+                        alert(json_data);
+                        return ;
+                    }
+                    //获取数据
+                    alert(json_data);
+                     $("#main_content").html(json_data);
+                })
+            })
     </script>
-</html>

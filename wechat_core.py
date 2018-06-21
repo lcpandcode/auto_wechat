@@ -4,9 +4,8 @@ import itchat
 
 def get_friends_and_groups_list(chat_instance):
     #获取friends
-    friends = chat_instance.get_friends()
-    for friend in friends:
-        name = friend['RemarkName']
-        if name == None or name == "":
-            name = friend['NickName']
-        print name
+    friends_groups = {}
+    friends_groups['friends'] = chat_instance.get_friends()
+    friends_groups['rooms'] = chat_instance.get_chatrooms()
+    return friends_groups
+

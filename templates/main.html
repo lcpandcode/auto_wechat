@@ -4,29 +4,47 @@
     <meta charset="UTF-8">
     <title>微信自动回复</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/global.css">
 	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <img src='../static/QR.png' id="qrimg">
-    <button class="btn" id="confirm">我已扫描并在微信确认登录</button>
-    <div>如二维码失效，可点击二维码刷新</div>
-    <div style="display: none">{{ uuid_num }}</div>
-    <script>
-        $(document).ready(function (){
-            //强制刷新图片
-            var timestamp = new Date().getTime();
-            $("#qrimg").attr('src',$("#qrimg").attr('src') + '?' +timestamp);
+    <nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+	<div class="navbar-header">
+		<div class="navbar-brand" href="#">微信自动回复</div>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+            <li><a href="#">注册用户</a></li>
+            <li><a href="#">开始自动回复</a></li>
+            <li><a href="#">查拉黑</a></li>
+            <li><a href="#">自定义自动回复</a></li>
 
-            $("#qrimg").click(function () {
-                $("#qrimg").attr('src',$(this).attr('src') + '?' +timestamp);
-            });
-            
-            $("#confirm").click(function () {
-                window.location.replace("/init.html");
-            })
-        });
+		</ul>
+	</div>
+	</div>
+</nav>
 
-    </script>
+<div class="global_margin">
+    <table>
+        <thead>
+            <tr>
+                <th><其他版本</th>
+                <th>版本说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Android</td>
+                <td>完善中</td>
+            </tr>
+            <tr>
+                <td>IOS</td>
+                <td>完善中</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
